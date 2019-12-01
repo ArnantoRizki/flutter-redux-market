@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux_market/model/comodity.dart';
 import 'dialog-beli.dart';
@@ -76,80 +77,100 @@ class _MarketPageState extends State<MarketPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.greenAccent,
-        title: Row(
-          children: <Widget>[
-            Expanded(
-              child: Center(child: Text('Market'),),
-            ),
-            InkWell(
-              child: Icon(Icons.shopping_basket),
-              onTap: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context)=>ShoppingPage())
-                );
-              },              
-            )
-          ],
-        )
-      ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 10.0),
-          child: ListView.builder(
-            itemCount: pasar.length,
-            itemBuilder: (BuildContext context, int index){
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom:8.0),
-                                child: Text(pasar[index].komoditas, style: TextStyle(color: Colors.greenAccent, fontSize: 16.0, fontWeight: FontWeight.bold),),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(pasar[index].penjual)
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(pasar[index].harga.toString())
-                            ),
-                          ],
+    return StoreConnector<List<ComodityItem>, List<ComodityItem>>(
+      converter: (store)=>store.state,
+      builder: (context, pembelian){
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.greenAccent,
+            title: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Center(child: Text('Market'),),
+                ),
+                Stack(
+                  children:<Widget>[
+                    Positioned(
+                      right: 0.0,
+                      width: 10.0,
+                      height: 10.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: pembelian.length == 0?Colors.transparent:Colors.red
                         ),
                       ),
-                      InkWell(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.greenAccent,
-                            borderRadius: BorderRadius.all(Radius.elliptical(10, 10))
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                            child: Text("Beli", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                          ),
-                        ),
-                        onTap: (){
-                          dialogBeli(pasar[index]);
-                        }
-                      )
-                    ],
-                  ),
-                ),
-              );
-            },
+                    ),
+                    InkWell(
+                      child: Icon(Icons.shopping_basket),
+                      onTap: (){
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context)=>ShoppingPage())
+                        );
+                      },              
+                    ),
+                  ]
+                )
+              ],
+            )
           ),
-        ),
-      ),
+          body: Container(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 10.0),
+              child: ListView.builder(
+                itemCount: pasar.length,
+                itemBuilder: (BuildContext context, int index){
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Column(
+                              children: <Widget>[
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom:8.0),
+                                    child: Text(pasar[index].komoditas, style: TextStyle(color: Colors.greenAccent, fontSize: 16.0, fontWeight: FontWeight.bold),),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(pasar[index].penjual)
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(pasar[index].harga.toString())
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.greenAccent,
+                                borderRadius: BorderRadius.all(Radius.elliptical(10, 10))
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                                child: Text("Beli", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                              ),
+                            ),
+                            onTap: (){
+                              dialogBeli(pasar[index]);
+                            }
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
