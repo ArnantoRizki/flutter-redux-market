@@ -20,42 +20,44 @@ class _ShoppingListState extends State<ShoppingList> {
       converter: (store) => store.state,
       builder:(context, pasar)=> Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 10.0),
-        child: ListView.builder(
-          itemCount: pasar.length,
-          itemBuilder: (BuildContext context, int index){
-            Pembelian maubeli = new Pembelian(total: Pembelian().totalharga(pasar), allitems: pasar);
-            print(maubeli.toJson());
-            return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom:8.0),
-                                child: Text(pasar[index].komoditas, style: TextStyle(color: Colors.greenAccent, fontSize: 16.0, fontWeight: FontWeight.bold),),
+        child: Container(
+          child: ListView.builder(
+            itemCount: pasar.length,
+            itemBuilder: (BuildContext context, int index){
+              Pembelian maubeli = new Pembelian(total: Pembelian().totalharga(pasar), allitems: pasar);
+              print(maubeli.toJson());
+              return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom:8.0),
+                                  child: Text(pasar[index].komoditas, style: TextStyle(color: Colors.greenAccent, fontSize: 16.0, fontWeight: FontWeight.bold),),
+                                ),
                               ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(pasar[index].penjual)
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text("Harga Total Rp. ${hargatotal(pasar[index].harga, pasar[index].beli)}")
-                            ),
-                          ],
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(pasar[index].penjual)
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text("Harga Total Rp. ${hargatotal(pasar[index].harga, pasar[index].beli)}")
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-          },
+                );
+            },
+          ),
         ),
       )
     );
